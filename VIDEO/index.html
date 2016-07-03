@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		#progress{
+			position: relative;
+			
+			display: block;
+			width: 200px;
+			height: 20px;
+			border-style: dotted;
+			border-width: thin;
+			border-color: darkgreen;
+		}
+		#filldiv{
+			position:absolute;
+			top: 0px;
+			left: 0px;
+			width: 0px;
+			height: 20px;
+			background: blue;
+		}
+		#shi{
+			position: absolute;
+			top: 0px;
+			left: 200px;
+			
+		}
+		</style>
+<script>
+window.onload = function() {
+	var ovio = document.getElementById("vio");
+	var start = document.getElementById("start");
+	var parse = document.getElementById("parse");
+	var quan = document.getElementById("quan");
+	var ovoice = document.getElementById("voice");
+	var noquan = document.getElementById("noquan");
+	var otime = document.getElementById("time");
+	var prog = document.getElementById("filldiv");
+	var oshi = document.getElementById("shi");
+	var opro=document.getElementById("progress");
+	var num=0;
+	start.onclick = function() {
+		ovio.play();
+	}
+	parse.onclick = function() {
+		ovio.pause();
+	}
+	quan.onclick = function() {
+		ovio.webkitRequestFullScreen();
+	}
+	noquan.onclick = function() {
+		document.webkitCancelFullScreen();
+
+	}
+	var a = true;
+	ovoice.onclick = function() {
+		if (a == true) {
+			ovio.muted = false;
+			this.value = "静音";
+			a = false;
+		} else {
+			ovio.muted = true;
+			this.value = "声音";
+			a = true;
+		}
+	}
+	var w=parseInt(ovio.duration);
+	//console.log(w);
+	function currentime() {
+		var zmiao = parseInt(ovio.currentTime);
+	
+		//console.log(zmiao);
+		var h = parseInt(zmiao / 3600);
+		var f = parseInt(zmiao % 3600 / 60);
+		var m = parseInt(zmiao % 3600 % 60);
+		oshi.innerHTML = h + ":" + f + ":" + m;
+		//num++;
+		//console.log(num);
+		prog.style.width =(200* zmiao)/w+ "px";
+	}
+	var timer=setInterval(currentime, 1000);
+	opro.onmousedown=function(e){
+		var ser=window.event||e;
+		clearInterval(timer);
+		var b=ser.offsetX;
+		//console.log(b);
+		prog.style.width =b+ "px";
+		ovio.currentTime=w/200*b;
+		setInterval(currentime, 1000);
+	}
+	
+	
+}
+</script>
+	</head>
+	<body>
+		<input id="start" value="start" type="button"/>
+		<input id="parse" value="parse" type="button"/>
+		<input id="voice" value="静音" type="button"/>
+		<input id="quan" value="quan" type="button"/>
+		<input id="noquan" value="noquan" type="button"/>
+		<input id="time" value="time" type="button"/><br />
+		<div id="progress">
+			<div id="filldiv"></div>
+			<span id="shi">0</span>
+		</div>
+		<video id="vio" width="500">
+			你的浏览器不支持
+			<source src="video/加勒比海盗3：世界的尽头[英语原声版]_bd.mp4"></source>
+			<source src="video/movie.ogg"></source>
+		</video>
+	</body>
+</html>
